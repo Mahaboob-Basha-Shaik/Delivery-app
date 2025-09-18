@@ -3,6 +3,7 @@
 	version="3.0">
 	<persistence-unit name="student_pu">
 		<class>com.tap.Student</class>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property name="jakarta.persistence.jdbc.driver"
 				value="com.mysql.cj.jdbc.Driver" />
