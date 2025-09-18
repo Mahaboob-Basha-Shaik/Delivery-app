@@ -13,6 +13,8 @@ public interface UserDAO {
 
 	void deleteUser(int userId);
 
+	User getUserById(int userId);
+
 	List<User> getAllUsers();
 
 	User login(String usernameOrEmail, String password);

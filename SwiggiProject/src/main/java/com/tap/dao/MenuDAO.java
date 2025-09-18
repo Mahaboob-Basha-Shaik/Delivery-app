@@ -4,6 +4,7 @@ import java.util.List;
 import com.tap.model.Menu;
 
 public interface MenuDAO {
+
 	void addMenu(Menu menu);
 
 	Menu getMenu(int menuId);
@@ -12,9 +13,11 @@ public interface MenuDAO {
 
 	void deleteMenu(int menuId);
 
+	Menu getMenuById(int menuId);
+
 	List<Menu> getAllMenuItems();
 
 	List<Menu> getAllMenuByRestaurant(int restaurantId);
 
-	Menu getMenuById(int menuId);
+	List<Menu> searchMenuItemsByName(String query);
 }

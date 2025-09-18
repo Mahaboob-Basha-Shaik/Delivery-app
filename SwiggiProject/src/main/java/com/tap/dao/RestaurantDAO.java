@@ -15,4 +15,6 @@ public interface RestaurantDAO {
 
 	Restaurant getRestaurantById(int restaurantId);
 
+	List<Restaurant> searchRestaurantsByName(String query);
+
 }

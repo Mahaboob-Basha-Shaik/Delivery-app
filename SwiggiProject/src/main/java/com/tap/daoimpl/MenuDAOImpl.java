@@ -174,6 +174,29 @@ public class MenuDAOImpl implements MenuDAO {
 		}
 	}
 
+	@Override
+	public List<Menu> searchMenuItemsByName(String query) {
+		List<Menu> menuList = new ArrayList<>();
+
+		String sql = "SELECT * FROM Menu WHERE LOWER(itemName) LIKE ?";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+			stmt.setString(1, "%" + query.toLowerCase() + "%");
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				menuList.add(extractMenu(rs));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return menuList;
+	}
+
 	// EXTRACT MENU FROM RESULTSET
 	private Menu extractMenu(ResultSet res) throws SQLException {
 		int menuId = res.getInt("menuId");

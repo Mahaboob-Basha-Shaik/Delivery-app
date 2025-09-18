@@ -138,4 +138,29 @@ public class RestaurantDAOImpl implements RestaurantDAO {
 				imagepath);
 	}
 
+	@Override
+	public List<Restaurant> searchRestaurantsByName(String query) {
+		List<Restaurant> restaurantList = new ArrayList<>();
+
+		String sql = "SELECT * FROM Restaurant WHERE LOWER(name) LIKE ?";
+
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+			stmt.setString(1, "%" + query.toLowerCase() + "%");
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				restaurantList.add(new Restaurant(rs.getInt("restaurantId"), rs.getString("name"),
+						rs.getString("location"), rs.getString("cuisine"), rs.getString("imagePath"), 0, 0,
+						rs.getDouble("rating"), false, sql));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return restaurantList;
+	}
+
 }

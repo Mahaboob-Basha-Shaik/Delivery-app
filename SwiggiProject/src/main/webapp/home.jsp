@@ -18,6 +18,8 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
+
+
 <style>
 /* Reset & Global */
 * {
@@ -92,6 +94,69 @@ body {
 	object-fit: contain;
 }
 
+/* === Search Bar Styling === */
+.search-bar-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 30px 0;
+}
+
+.search-bar-form {
+	background-color: #ffffff;
+	border-radius: 50px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	display: flex;
+	padding: 10px 20px;
+	width: 600px;
+	max-width: 90%;
+}
+
+.search-bar-form input[type="text"] {
+	flex: 1;
+	padding: 12px 18px;
+	font-size: 18px;
+	border: none;
+	outline: none;
+	border-radius: 50px;
+}
+
+.search-bar-form button {
+	background-color: #fc8019;
+	border: none;
+	color: white;
+	padding: 12px 20px;
+	border-radius: 50px;
+	cursor: pointer;
+	font-size: 18px;
+	transition: background-color 0.3s ease;
+}
+
+.search-bar-form button:hover {
+	background-color: #e56705;
+}
+
+.search-bar-form i.fa {
+	font-size: 18px;
+}
+
+.search-bar-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.search-bar-form {
+	display: flex;
+	gap: 10px;
+}
+
+.search-error {
+	color: red;
+	font-weight: bold;
+	margin-top: 10px;
+}
+
 .banner-text {
 	margin-top: 80px;
 }
@@ -124,7 +189,6 @@ body {
 	background-color: #e66d00;
 }
 
-/* === NEW CIRCULAR ITEMS SECTION === */
 .round-items-section {
 	text-align: center;
 	margin: 50px 0 30px;
@@ -438,7 +502,7 @@ body {
 					class="nav-icon" /> Home</a> <a
 					href="<%=request.getContextPath()%>/all-menus"><img
 					src="https://img.icons8.com/ios-filled/24/000000/menu.png"
-					class="nav-icon" /> Menu</a> <a href="login.jsp"><img
+					class="nav-icon" /> Menu </a> <a href="login.jsp"><img
 					src="https://img.icons8.com/ios-filled/24/000000/login-rounded-right.png"
 					class="nav-icon" /> Login</a> <a href="Profile.jsp"><img
 					src="https://img.icons8.com/ios-filled/24/000000/user.png"
@@ -452,55 +516,111 @@ body {
 			<h1>Order Food Online From Your Favourite Restaurant</h1>
 			<p>Find restaurants that deliver near you</p>
 			<a href="all-menus" class="order-btn">Order Now</a>
+
 		</div>
 	</div>
+
+	<!-- === Enhanced Search Bar Section === -->
+	<div class="search-bar-container">
+
+		<!-- Search Form (keeps input and button on one line) -->
+		<div style="display: flex; gap: 10px;">
+			<form action="search" method="get" class="search-bar-form"
+				style="display: flex; flex-wrap: wrap;">
+				<input type="text" name="query"
+					placeholder="Search for restaurants, items..." required />
+				<button type="submit">
+					<i class="fa fa-search"></i>
+				</button>
+			</form>
+		</div>
+
+		<!-- Message BELOW the search bar -->
+		<div style="margin-top: 10px;">
+			<%
+			String error = (String) request.getAttribute("searchError");
+			if (error != null) {
+			%>
+			<span style="color: red; font-weight: bold;"><%=error%></span>
+			<%
+			}
+			%>
+		</div>
+	</div>
+
+	<!-- SEARCH FILTER SCRIPT -->
+	<script>
+    const searchInput = document.getElementById("searchInput");
+    const cards = document.querySelectorAll(".card");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      cards.forEach(card => {
+        const name = card.getAttribute("data-name");
+        const cuisine = card.getAttribute("data-cuisine");
+        if (name.includes(query) || cuisine.includes(query)) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  </script>
+
+
 
 	<!-- === Popular Choices Section === -->
 	<section class="popular-choices">
 		<h2 class="section-title">Popular Choices</h2>
 		<div class="choices-grid">
-			<div class="choice-item">
-				<img
-					src="https://media.istockphoto.com/id/1442417585/photo/person-getting-a-piece-of-cheesy-pepperoni-pizza.jpg?s=170667a&w=is&k=20&c=4lA5wHN1tOdZIJouP_Q9EYlc5F8KkkZ6XEK4TIDtt_A="
-					alt="Pizza"> <span class="choice-name">Pizza</span>
-			</div>
-			<div class="choice-item">
-				<img
-					src="https://content.jdmagicbox.com/v2/comp/bangalore/u1/080pxx80.xx80.220620000405.i3u1/catalogue/mcdonald-s-gourmet-burger-collection-hanumantha-nagar-bangalore-burger-joints-0vh8c36ylp.jpg"
-					alt="Burger"> <span class="choice-name">Burger</span>
-			</div>
-			<div class="choice-item">
-				<img
-					src="https://www.thehosteller.com/_next/image/?url=https%3A%2F%2Fstatic.thehosteller.com%2Fhostel%2Fimages%2Fimage.jpg%2Fimage-1744199226259.jpg&w=2048&q=75"
-					alt="Biryani"> <span class="choice-name">Biryani</span>
-			</div>
-			<div class="choice-item">
-				<img
-					src="https://images.getrecipekit.com/20241008094433-blog-20templates-20-3.webp?aspect_ratio=16:9&quality=90&"
-					alt="Noodles"> <span class="choice-name">Noodles</span>
-			</div>
-			<div class="choice-item">
-				<img
-					src="https://www.keep-calm-and-eat-ice-cream.com/wp-content/uploads/2022/08/Ice-cream-sundae-hero-11.jpg"
-					alt="Ice Cream"> <span class="choice-name">Ice Cream</span>
-			</div>
-			<div class="choice-item">
-				<img
-					src="https://media.istockphoto.com/id/504754220/photo/cocktails.jpg?s=612x612&w=0&k=20&c=NxIzGT-LbUS0BAPoCMDY3mEp96AnIxxldbWmFMeeD-A="
-					alt="Beverages"> <span class="choice-name">Beverages</span>
-			</div>
-			<div class="choice-item">
-				<img
-					src="https://indian-retailer.s3.ap-south-1.amazonaws.com/s3fs-public/2024-06/image%20%283%29_1.jpg"
-					alt="Beverages"> <span class="choice-name">Drinks</span>
-			</div>
-			<div class="choice-item">
-				<img
-					src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfgxUgK_lY_Q8gH9QQo_qZ7L06YcHbxYfCnA&s"
-					alt="Beverages"> <span class="choice-name">Chill Items</span>
-			</div>
+
+			<a href="menu?restaurantId=1" class="choice-item"
+				style="text-decoration: none; text-align: center;"> <img
+				src="https://media.istockphoto.com/id/1442417585/photo/person-getting-a-piece-of-cheesy-pepperoni-pizza.jpg?s=170667a&w=is&k=20&c=4lA5wHN1tOdZIJouP_Q9EYlc5F8KkkZ6XEK4TIDtt_A="
+				alt="Pizza"> <span class="choice-name">Pizza</span>
+
+			</a> <a href="menu?restaurantId=1" class="choice-item"
+				style="text-decoration: none; text-align: center;"> <img
+				src="https://content.jdmagicbox.com/v2/comp/bangalore/u1/080pxx80.xx80.220620000405.i3u1/catalogue/mcdonald-s-gourmet-burger-collection-hanumantha-nagar-bangalore-burger-joints-0vh8c36ylp.jpg"
+				alt="Burger"> <span class="choice-name">Burger</span>
+
+			</a> <a href="menu?restaurantId=1" class="choice-item"
+				style="text-decoration: none; text-align: center;"> <img
+				src="https://www.thehosteller.com/_next/image/?url=https%3A%2F%2Fstatic.thehosteller.com%2Fhostel%2Fimages%2Fimage.jpg%2Fimage-1744199226259.jpg&w=2048&q=75"
+				alt="Biryani"> <span class="choice-name">Biryani</span>
+
+			</a> <a href="menu?restaurantId=3" class="choice-item"
+				style="text-decoration: none; text-align: center;"> <img
+				src="https://images.getrecipekit.com/20241008094433-blog-20templates-20-3.webp?aspect_ratio=16:9&quality=90&"
+				alt="Noodles"> <span class="choice-name">Noodles</span>
+
+			</a> <a href="menu?restaurantId=4" class="choice-item"
+				style="text-decoration: none; text-align: center;"><img
+				src="https://images.getrecipekit.com/20240406030024-andy-20cooks-20-20sushi-20recipe-20recipe.jpg?aspect_ratio=4:3&quality=90&"
+				alt="Drinks"> <span class="choice-name">Chinise</span> </a> <a
+				href="menu?restaurantId=7" class="choice-item"
+				style="text-decoration: none; text-align: center;"><img
+				src="https://www.keep-calm-and-eat-ice-cream.com/wp-content/uploads/2022/08/Ice-cream-sundae-hero-11.jpg"
+				alt="Ice Cream"> <span class="choice-name">Ice Cream</span> </a> <a
+				href="menu?restaurantId=8" class="choice-item"
+				style="text-decoration: none; text-align: center;"> <img
+				src="https://media.istockphoto.com/id/504754220/photo/cocktails.jpg?s=612x612&w=0&k=20&c=NxIzGT-LbUS0BAPoCMDY3mEp96AnIxxldbWmFMeeD-A="
+				alt="Beverages"> <span class="choice-name">Beverages</span>
+
+			</a><a href="menu?restaurantId=9" class="choice-item"
+				style="text-decoration: none; text-align: center;"><img
+				src="https://indian-retailer.s3.ap-south-1.amazonaws.com/s3fs-public/2024-06/image%20%283%29_1.jpg"
+				alt="Drinks"> <span class="choice-name">Drinks</span> </a> <a
+				href="menu?restaurantId=9" class="choice-item"
+				style="text-decoration: none; text-align: center;"><img
+				src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfgxUgK_lY_Q8gH9QQo_qZ7L06YcHbxYfCnA&s"
+				alt="Chill Items"> <span class="choice-name">Chill
+					Items</span> </a>
+
 		</div>
 	</section>
+
+
 
 
 	<!-- Restaurant Cards -->
@@ -514,7 +634,7 @@ body {
 			style="text-decoration: none; color: inherit;">
 			<div class="card">
 				<img src="<%=restaurant.getImagepath()%>"
-						alt="<%=restaurant.getName()%>" />
+					alt="<%=restaurant.getName()%>" />
 				<div class="card-body">
 					<h3><%=restaurant.getName()%></h3>
 					<p class="desc">

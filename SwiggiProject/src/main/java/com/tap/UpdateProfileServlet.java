@@ -1,11 +1,9 @@
 package com.tap;
 
 import java.io.IOException;
-
 import com.tap.dao.UserDAO;
 import com.tap.daoimpl.UserDAOImpl;
 import com.tap.model.User;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,19 +14,20 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/updateProfile")
 public class UpdateProfileServlet extends HttpServlet {
 
-	private UserDAO userDAO = new UserDAOImpl();
+	private static final long serialVersionUID = 1L;
+	private final UserDAO userDAO = new UserDAOImpl();
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
-		if (session == null || session.getAttribute("loggedInUser") == null) {
+		if (session == null || session.getAttribute("user") == null) {
 			response.sendRedirect("login.jsp?message=Please+login+first");
 			return;
 		}
 
-		User user = (User) session.getAttribute("loggedInUser");
+		User user = (User) session.getAttribute("user");
 
 		// Get updated values
 		String name = request.getParameter("name");
@@ -42,13 +41,14 @@ public class UpdateProfileServlet extends HttpServlet {
 		user.setPhone(phone);
 		user.setAddress(address);
 
-		// Save to DB
+		// Update in database
 		userDAO.updateUser(user);
 
-		// Update session
-		session.setAttribute("loggedInUser", user);
+		// Refresh the session object with latest DB data (optional but recommended)
+		User updatedUser = userDAO.getUserById(user.getUserId());
+		session.setAttribute("user", updatedUser); // match key used in login and profile.jsp
 
-		// Redirect back to profile
-		response.sendRedirect("profile");
+		// Redirect back to profile page
+		response.sendRedirect("profile.jsp");
 	}
 }

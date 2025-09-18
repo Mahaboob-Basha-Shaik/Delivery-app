@@ -80,7 +80,7 @@ button:hover {
 }
 
 .success-message {
-	color: #28a745;
+	color: green;
 	margin-bottom: 1rem;
 	font-weight: 600;
 }

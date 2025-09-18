@@ -16,6 +16,7 @@ public class UserLaunch {
 		System.out.println();
 
 		System.out.print("Enter the name: ");
+
 		String name = scan.nextLine();
 
 		System.out.print("Enter the Username: ");
